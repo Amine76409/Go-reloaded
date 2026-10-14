@@ -12,7 +12,7 @@ func main() {
 	}
 
 	data, err := os.ReadFile(os.Args[1])
-	if err != nil {
+	if err != nil {  
 		fmt.Println(err)
 		os.Exit(1)
 	}
