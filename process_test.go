@@ -31,3 +31,11 @@ func TestProcess(t *testing.T) {
 		}
 	}
 }
+
+func TestProcessManyLines(t *testing.T) {
+	got := Process("hello (up)\nworld (cap)\n")
+	want := "HELLO\nworld\n"
+	if got != want {
+			tErrorf("got %q, want %q", got, want)
+	}
+}
