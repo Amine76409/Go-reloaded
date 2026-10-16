@@ -18,3 +18,26 @@ func ReadMarker(token string) (string, int) {
 	}
 	return name, n
 }
+
+func ApplyMarkers(tokens []string) []string {
+	result := []string{}
+	for _, token := range tokens {
+		if !IsMarker(token) {
+			result = append(result, token)
+			continue
+		}
+		if len(result) == 0 {
+			continue
+		}
+		name, n := ReadMarker(token)
+		last := len(result) - 1
+		if name == "hex" {
+			result[last] = ConvertNumber(result[last], 16)
+		} else if name == "bin" {
+			result[last] = ConvertNumber(result[last], 2)
+		} else {
+			result = ApplyCase(result, name, n)
+		}
+	}
+	return result
+}
