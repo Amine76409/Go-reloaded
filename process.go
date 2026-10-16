@@ -51,3 +51,11 @@ func ProcessLine(line string) string {
 	text = FixArticles(text)
 	return text
 }
+
+func Process(text string) string {
+	lines := strings.Split(text, "\n")
+	for i, line := range lines {
+		lines[i] = ProcessLine(line)
+	}
+	return strings.Join(lines, "\n")
+}
