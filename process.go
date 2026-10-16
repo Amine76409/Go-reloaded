@@ -41,3 +41,13 @@ func ApplyMarkers(tokens []string) []string {
 	}
 	return result
 }
+
+func ProcessLine(line string) string {
+	tokens := Tokenize(line)
+	tokens = ApplyMarkers(tokens)
+	text := strings.Join(tokens, " ")
+	text = FixPunctuation(text)
+	text = FixQuotes(text)
+	text = FixArticles(text)
+	return text
+}
