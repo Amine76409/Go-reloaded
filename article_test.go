@@ -15,4 +15,10 @@ func TestFixArticles(t *testing.T) {
 		{"a", "a"},
 		{"a end", "an end"},
 	}
+		for _, test := range tests {
+		got := FixArticles(test.input)
+		if got != test.want {
+			t.Errorf("FixArticles(%q) = %q, want %q", test.input, got, test.want)
+		}
+	}
 }
