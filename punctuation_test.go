@@ -28,6 +28,20 @@ func FixPunctuation(text string) string {
 			i++
 			continue
 		}
-	}
 
+		for len(result) > 0 && result[len(result)-1] == ' ' {
+			result = result[:len(result)-1]
+		}
+		for i < len(runes) && isPunct(runes[i]) {
+			result = append(result, runes[i])
+			i++
+		}
+		for i < len(runes) && runes[i] == ' ' {
+			i++
+		}
+		if i < len(runes) {
+			result = append(result, ' ')
+		}
+	}
+	return string(result)
 }
