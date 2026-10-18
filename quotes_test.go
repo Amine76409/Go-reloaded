@@ -19,4 +19,11 @@ func TestFixQuotes(t *testing.T) {
 		}
 	}
 }
-	
+
+func TestQuotesInText(t *testing.T) {
+	got := Process("He said ' hello there ' , then left")
+	want := "He said 'hello there', then left"
+	if got != want {
+		t.Errorf("got %q, want %q", got, want)
+	}
+}
