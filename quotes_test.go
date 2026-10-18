@@ -12,4 +12,11 @@ func TestFixQuotes(t *testing.T) {
 		{"I don't know", "I don't know"},
 		{"'already fine'", "'already fine'"},
 	}
-}	
+		for _, test := range tests {
+		got := FixQuotes(test.input)
+		if got != test.want {
+			t.Errorf("FixQuotes(%q) = %q, want %q", test.input, got, test.want)
+		}
+	}
+}
+	
