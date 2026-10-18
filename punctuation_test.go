@@ -19,5 +19,15 @@ func FixPunctuation(text string) string {
 			i++
 			continue
 		}
+	
+		isNumber := (runes[i] == '.' || runes[i] == ',' || runes[i] == ':') &&
+			i > 0 && i+1 < len(runes) &&
+			unicode.IsDigit(runes[i-1]) && unicode.IsDigit(runes[i+1])
+		if isNumber {
+			result = append(result, runes[i])
+			i++
+			continue
+		}
 	}
+
 }
