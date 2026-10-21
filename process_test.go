@@ -22,5 +22,19 @@ func TestProcess(t *testing.T) {
 		{"zz (hex) word", "zz word"},
 		{"(up) hello", "hello"},
 	}
+
+	for _, test := range tests {
+		got := Process(test.input)
+		if got != test.want {
+			t.Errorf("Process(%q) = %q, want %q", test.input, got, test.want)
+		}
+	}
 }
-	
+
+func TestProcessManyLines(t *testing.T) {
+	got := Process("hello (up)\nworld (cap)\n")
+	want := "HELLO\nWorld\n"
+	if got != want {
+		t.Errorf("got %q, want %q", got, want)
+	}
+}
