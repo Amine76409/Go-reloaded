@@ -1,33 +1,47 @@
 package main
 
-import "unicode"
+import "strings"
 
 func FixQuotes(text string) string {
 	runes := []rune(text)
-	result := []rune{}
+	result := ""
+	// open = true si on est dans des guillemets
 	open := false
+	// skip = true si on doit ignorer les espaces
+	skip := false
+
 	for i := 0; i < len(runes); i++ {
 		r := runes[i]
-		insideWord := i > 0 && i+1 < len(runes) &&
-			unicode.IsLetter(runes[i-1]) && unicode.IsLetter(runes[i+1])
-		if r != '\'' || insideWord {
-			result = append(result, r)
+
+		// on ignore les espaces juste après un guillemet qui ouvre
+		if skip && r == ' ' {
+			continue
+		}
+		skip = false
+
+		// si ce n'est pas un guillemet, on le garde
+		if r != '\'' {
+			result = result + string(r)
 			continue
 		}
 
-		if !open {
-			result = append(result, r)
+		// un ' au milieu d'un mot (ex : don't), on le garde
+		if i > 0 && i+1 < len(runes) && isLetter(runes[i-1]) && isLetter(runes[i+1]) {
+			result = result + string(r)
+			continue
+		}
+
+		if open == false {
+			// guillemet qui ouvre
+			result = result + "'"
 			open = true
-			for i+1 < len(runes) && runes[i+1] == ' ' {
-				i++
-			}
+			skip = true
 		} else {
-			for len(result) > 0 && result[len(result)-1] == ' ' {
-				result = result[:len(result)-1]
-			}
-			result = append(result, r)
+			// guillemet qui ferme : on enlève les espaces avant
+			result = strings.TrimRight(result, " ")
+			result = result + "'"
 			open = false
 		}
 	}
-	return string(result)
+	return result
 }
