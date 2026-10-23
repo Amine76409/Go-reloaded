@@ -3,22 +3,18 @@ package main
 import "strings"
 
 // vrai si le caractère est une lettre (a-z ou A-Z)
+// (quotes.go s'en sert aussi)
 func isLetter(r rune) bool {
 	return (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z')
 }
 
 func Capitalize(word string) string {
-	// on met tout en minuscule et on transforme en liste de caractères
-	runes := []rune(strings.ToLower(word))
-	for i, r := range runes {
-		// on cherche la première lettre
-		if isLetter(r) {
-			// on la met en majuscule et on s'arrête
-			runes[i] = r - 32
-			break
-		}
+	// un mot vide reste vide
+	if word == "" {
+		return ""
 	}
-	return string(runes)
+	// première lettre en majuscule, le reste en minuscule
+	return strings.ToUpper(word[:1]) + strings.ToLower(word[1:])
 }
 
 func ChangeCase(word string, name string) string {
