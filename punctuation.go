@@ -12,41 +12,36 @@ func isDigit(r rune) bool {
 	return r >= '0' && r <= '9'
 }
 
+// vrai si la ponctuation à la place i est dans un nombre (3.14 ou 10:30)
+func dansUnNombre(runes []rune, i int) bool {
+	if i == 0 || i == len(runes)-1 {
+		return false
+	}
+	return isDigit(runes[i-1]) && isDigit(runes[i+1])
+}
+
 func FixPunctuation(text string) string {
+	// étape 1 : on enlève l'espace avant chaque ponctuation
+	for _, p := range ".,!?:;" {
+		text = strings.ReplaceAll(text, " "+string(p), string(p))
+	}
+
+	// étape 2 : on ajoute un espace après la ponctuation
 	runes := []rune(text)
 	result := ""
-	// needSpace = true si on doit mettre un espace après la ponctuation
-	needSpace := false
-
-	for i := 0; i < len(runes); i++ {
-		r := runes[i]
-
-		// après la ponctuation, on ignore les espaces
-		if needSpace && r == ' ' {
-			continue
-		}
-
-		// si ce n'est pas de la ponctuation
-		if !isPunct(r) {
-			// on met l'espace qu'on avait gardé
-			if needSpace {
-				result = result + " "
-				needSpace = false
-			}
-			result = result + string(r)
-			continue
-		}
-
-		// si c'est dans un nombre (3.14 ou 10:30), on ne change rien
-		if (r == '.' || r == ',' || r == ':') && i > 0 && i+1 < len(runes) && isDigit(runes[i-1]) && isDigit(runes[i+1]) {
-			result = result + string(r)
-			continue
-		}
-
-		// ponctuation : on enlève les espaces avant et on l'ajoute
-		result = strings.TrimRight(result, " ")
+	for i, r := range runes {
 		result = result + string(r)
-		needSpace = true
+
+		// si c'est la fin du texte, on ne met rien
+		if i == len(runes)-1 {
+			continue
+		}
+		// on met un espace si la ponctuation est suivie d'une lettre
+		// (pas d'espace pour ... ou !? ou un nombre comme 3.14)
+		suivant := runes[i+1]
+		if isPunct(r) && suivant != ' ' && !isPunct(suivant) && !dansUnNombre(runes, i) {
+			result = result + " "
+		}
 	}
 	return result
 }
