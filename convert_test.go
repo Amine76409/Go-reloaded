@@ -3,27 +3,34 @@ package main
 import "testing"
 
 func TestConvertNumber(t *testing.T) {
-	// chaque test : un mot, une base, et ce qu'on veut à la fin
-	tests := []struct {
-		word string
-		base int
-		want string
-	}{
-		{"1E", 16, "30"},
-		{"42", 16, "66"},
-		{"10", 2, "2"},
-		{"1010", 2, "10"},
-		{"zz", 16, "zz"},// pas un nombre, donc ça ne change pas
-		{"12", 2, "12"},// 2 n'existe pas en binaire, donc ça ne change pas
+	// 1E en hexa = 30
+	if ConvertNumber("1E", 16) != "30" {
+		t.Error("1E en hexa doit donner 30")
 	}
 
-	// on teste chaque cas un par un
-	for _, test := range tests {
-		got := ConvertNumber(test.word, test.base)
-		// si le résultat n'est pas bon, on affiche l'erreur
-		if got != test.want {
-			t.Errorf("ConvertNumber(%q, %d) = %q, want %q", test.word, test.base, got, test.want)
-		}
+	// 42 en hexa = 66
+	if ConvertNumber("42", 16) != "66" {
+		t.Error("42 en hexa doit donner 66")
+	}
+
+	// 10 en binaire = 2
+	if ConvertNumber("10", 2) != "2" {
+		t.Error("10 en binaire doit donner 2")
+	}
+
+	// 1010 en binaire = 10
+	if ConvertNumber("1010", 2) != "10" {
+		t.Error("1010 en binaire doit donner 10")
+	}
+
+	// zz n'est pas un nombre hexa, donc ça ne change pas
+	if ConvertNumber("zz", 16) != "zz" {
+		t.Error("zz doit rester zz")
+	}
+
+	// 2 n'existe pas en binaire, donc ça ne change pas
+	if ConvertNumber("12", 2) != "12" {
+		t.Error("12 en binaire doit rester 12")
 	}
 }
 
